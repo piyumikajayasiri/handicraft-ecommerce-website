@@ -1,11 +1,20 @@
+import { login } from "@/action/user";
+import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { getSession } from "@/lib/getSession";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const RegisterPage = () => {
+const LoginPage = async () => {
+  const session = await getSession();
+  const user = session?.user;
+  if (user) {
+    redirect("/");
+  }
   return (
     <div className="flex flex-row min-h-screen">
       {/* Left Panel - Form Section */}
@@ -19,29 +28,7 @@ const RegisterPage = () => {
             lobortis maximus.
           </p>
 
-          <form className="space-y-4">
-            <div>
-              <Label className="mb-2" htmlFor="firstname">
-                First Name
-              </Label>
-              <Input
-                name="firstname"
-                type="text"
-                id="firstname"
-                placeholder="First Name"
-              />
-            </div>
-            <div>
-              <Label className="mb-2" htmlFor="lastname">
-                Last Name
-              </Label>
-              <Input
-                name="lastname"
-                type="text"
-                id="lastname"
-                placeholder="Last Name"
-              />
-            </div>
+          <form action={login} className="space-y-4">
             <div>
               <Label className="mb-2" htmlFor="email">
                 Email Address
@@ -61,18 +48,26 @@ const RegisterPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center ">
               <Button className="rounded-full font-normal w-[300px]">
-                Sign up with email
+                Login with Email
               </Button>
               <p className="text-sm font-light">
-                Already signed up? <Link href="/auth/login">Login</Link>
+                Don&apos;t have an account?{" "}
+                <Link href="/register">Register</Link>
               </p>
             </div>
             <Separator />
             <div className="flex flex-col justify-center items-center ">
-              <Button className="rounded-full bg-white text-black border border-black hover:bg-gray-100 hover:border hover:border-black font-normal w-[300px]">
-                {" "}
-                🌐 Continue with Google
-              </Button>
+              <form
+                action={async () => {
+                  "use server";
+                  await signIn("google");
+                }}
+              >
+                <button className="rounded-full bg-white text-black border border-black hover:bg-gray-100 hover:border hover:border-black font-normal w-[300px]">
+                  {" "}
+                  🌐 Continue with Google
+                </button>
+              </form>
             </div>
           </form>
         </div>
@@ -84,4 +79,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

@@ -1,3 +1,4 @@
+import { register } from "@/action/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -5,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import React from "react";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   return (
     <div className="flex flex-row min-h-screen">
       {/* Left Panel - Form Section */}
@@ -19,7 +20,29 @@ const LoginPage = () => {
             lobortis maximus.
           </p>
 
-          <form className="space-y-4">
+          <form action={register} className="space-y-4">
+            <div>
+              <Label className="mb-2" htmlFor="firstname">
+                First Name
+              </Label>
+              <Input
+                name="firstname"
+                type="text"
+                id="firstname"
+                placeholder="First Name"
+              />
+            </div>
+            <div>
+              <Label className="mb-2" htmlFor="lastname">
+                Last Name
+              </Label>
+              <Input
+                name="lastname"
+                type="text"
+                id="lastname"
+                placeholder="Last Name"
+              />
+            </div>
             <div>
               <Label className="mb-2" htmlFor="email">
                 Email Address
@@ -39,11 +62,10 @@ const LoginPage = () => {
             </div>
             <div className="flex flex-col justify-center items-center ">
               <Button className="rounded-full font-normal w-[300px]">
-                Login with Email
+                Sign up with email
               </Button>
               <p className="text-sm font-light">
-                Don&apos;t have an account?{" "}
-                <Link href="/auth/register">Register</Link>
+                Already signed up? <Link href="/login">Login</Link>
               </p>
             </div>
             <Separator />
@@ -63,4 +85,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
